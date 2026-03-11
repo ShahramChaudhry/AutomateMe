@@ -9,7 +9,7 @@ import json
 settings = get_settings()
 
 app = FastAPI(
-    title="AI Ops Auditor API",
+    title="AutomateMe API",
     description="Analyze workflows to identify AI automation opportunities",
     version="1.0.0"
 )
@@ -25,7 +25,7 @@ app.add_middleware(
 
 @app.get("/")
 async def root():
-    return {"message": "AI Ops Auditor API", "status": "running"}
+    return {"message": "AutomateMe API", "status": "running"}
 
 
 @app.post("/analyze/text", response_model=AnalysisResponse)

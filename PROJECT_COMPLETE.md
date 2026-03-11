@@ -1,4 +1,4 @@
-# 🎉 Project Complete - AI Ops Auditor
+# 🎉 Project Complete - AutomateMe
 
 ## ✅ What's Been Built
 

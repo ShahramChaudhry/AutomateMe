@@ -1,6 +1,6 @@
 # 👋 START HERE
 
-## Welcome to AI Ops Auditor!
+## Welcome to AutomateMe!
 
 This is your complete, production-ready MVP for analyzing workflows and finding AI automation opportunities.
 
@@ -13,15 +13,15 @@ This is your complete, production-ready MVP for analyzing workflows and finding 
 ./setup.sh
 
 # 2. Get FREE API key (2 min, one-time)
-# Visit: https://ai.google.dev/
+# Visit: https://aistudio.google.com/app/apikey
 # Copy your key (starts with AIza...)
 
-# 3. Add key to backend/.env
-nano backend/.env
-# Paste your key, save (Ctrl+O, Ctrl+X)
+# 3. Add key to frontend/.env.local
+nano frontend/.env.local
+# Paste your key after GOOGLE_API_KEY=
 
 # 4. Run the app (30 sec)
-./start.sh
+cd frontend && npm run dev
 
 # 5. Open in browser
 # http://localhost:3000

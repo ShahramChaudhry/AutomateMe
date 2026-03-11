@@ -47,8 +47,8 @@ services:
 
 ### Backend (Production)
 ```
-GOOGLE_API_KEY=AIza...
-GEMINI_MODEL=gemini-2.0-flash-exp
+GOOGLE_API_KEY=your-google-api-key-here
+GEMINI_MODEL=gemini-2.5-flash
 FRONTEND_URL=https://your-domain.com
 ```
 

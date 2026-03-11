@@ -20,7 +20,7 @@ git init
 git add .
 
 # Commit
-git commit -m "AI Ops Auditor - Ready for Vercel deployment"
+git commit -m "AutomateMe - Ready for Vercel deployment"
 
 # Create repo on GitHub, then:
 git remote add origin https://github.com/YOUR-USERNAME/YOUR-REPO.git
@@ -99,7 +99,7 @@ vercel
 # - Setup and deploy? Y
 # - Which scope? [your account]
 # - Link to existing project? N
-# - Project name: ai-ops-auditor
+# - Project name: automateme
 # - In which directory is your code? ./
 # - Want to override settings? Y
 # - Override Framework? Y → Next.js

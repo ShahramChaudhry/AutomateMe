@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "AI Ops Auditor",
+  title: "AutomateMe",
   description: "Audit operational workflows to uncover high-impact AI automation opportunities",
 };
 

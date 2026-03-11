@@ -1,5 +1,5 @@
 {
-  "name": "ai-ops-auditor",
+  "name": "automateme",
   "version": "1.0.0",
   "private": true,
   "scripts": {
@@ -9,10 +9,13 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@google/generative-ai": "^0.24.1",
+    "axios": "^1.7.9",
+    "jspdf": "^4.2.0",
     "next": "14.2.18",
+    "pdf-parse": "^2.4.5",
     "react": "^18.3.1",
-    "react-dom": "^18.3.1",
-    "axios": "^1.7.9"
+    "react-dom": "^18.3.1"
   },
   "devDependencies": {
     "@types/node": "^22.9.3",

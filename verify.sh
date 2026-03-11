@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo "🔍 Verifying AI Ops Auditor setup..."
+echo "🔍 Verifying AutomateMe setup..."
 echo ""
 
 # Check Python

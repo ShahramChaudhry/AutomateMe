@@ -13,7 +13,7 @@ Before running the app, complete these steps:
 
 - [ ] Run `./start.sh` to start both servers
 - [ ] Open http://localhost:3000 in browser
-- [ ] Verify page loads with "AI Ops Auditor" title
+- [ ] Verify page loads with "AutomateMe" title
 - [ ] Check backend at http://localhost:8000/docs
 
 ## ✅ First Test Checklist

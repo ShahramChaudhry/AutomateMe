@@ -1,8 +1,8 @@
-# AI Ops Auditor - Project Summary
+# AutomateMe - Project Summary
 
 ## What Is This?
 
-AI Ops Auditor is a full-stack web application that analyzes operational workflows and identifies high-impact AI automation opportunities. It's designed to help companies discover where AI agents can reduce manual work, improve speed, and enhance quality.
+AutomateMe is a full-stack web application that analyzes operational workflows and identifies high-impact AI automation opportunities. It's designed to help companies discover where AI agents can reduce manual work, improve speed, and enhance quality.
 
 ## Key Features
 

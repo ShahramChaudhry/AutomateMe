@@ -14,9 +14,9 @@
    - Copy your API key (starts with `AIza...`)
 
 4. **Add to Your App**  
-   Edit `backend/.env`:
+   Edit `frontend/.env.local`:
    ```bash
-   GOOGLE_API_KEY=AIzaSy...your_actual_key_here
+   GOOGLE_API_KEY=your-actual-key-here
    ```
 
 5. **Done!**  

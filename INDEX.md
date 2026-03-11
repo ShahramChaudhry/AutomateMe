@@ -1,4 +1,4 @@
-# AI Ops Auditor - Documentation Index
+# AutomateMe - Documentation Index
 
 ## 🚀 Quick Navigation
 

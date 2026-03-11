@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo "🚀 Starting AI Ops Auditor..."
+echo "🚀 Starting AutomateMe..."
 
 echo ""
 echo "Starting backend server..."

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo "🛠️  Setting up AI Ops Auditor..."
+echo "🛠️  Setting up AutomateMe..."
 
 echo ""
 echo "1️⃣ Setting up backend..."

@@ -122,7 +122,7 @@ vercel --prod
 
 ### Backend (Railway/Render)
 ```
-GOOGLE_API_KEY=AIzaSy...
+GOOGLE_API_KEY=your-google-api-key-here
 GEMINI_MODEL=gemini-2.5-flash
 FRONTEND_URL=https://your-app.vercel.app
 ```
@@ -244,7 +244,7 @@ This approach is more complex and has cold start delays.
 ```bash
 # 1. Push to GitHub
 git add .
-git commit -m "Deploy AI Ops Auditor"
+git commit -m "Deploy AutomateMe"
 git push origin main
 
 # 2. Deploy backend (Railway CLI)

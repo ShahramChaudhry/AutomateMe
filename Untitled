@@ -1,8 +1,0 @@
-
- 
-Please resolve these alerts
- 
-Anyone with read access can view exposed secrets. Consider rotating and revoking each valid secret to avoid any irreversible damage.
- 
-Google API Key
-Review secret detected in deploy-vercel.sh#L37 • commit 134e4abb	

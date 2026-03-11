@@ -1,11 +1,11 @@
-# 🎨 Visual Overview - AI Ops Auditor
+# 🎨 Visual Overview - AutomateMe
 
 ## Application Flow
 
 ```
 ┌─────────────────────────────────────────────────┐
 │                                                 │
-│           🌐 AI Ops Auditor                     │
+│           🌐 AutomateMe                         │
 │     localhost:3000 (Next.js + Tailwind)        │
 │                                                 │
 │  ┌────────────────────────────────────────┐   │
@@ -118,7 +118,7 @@
 ```
 ┌────────────────────────────────────────────────────────┐
 │                                                        │
-│              AI Ops Auditor                            │
+│              AutomateMe                            │
 │  Audit operational workflows to uncover high-impact   │
 │         AI automation opportunities                    │
 │                                                        │

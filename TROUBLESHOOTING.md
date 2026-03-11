@@ -20,10 +20,10 @@ pip install -r requirements.txt
 **Problem**: Environment variable not set
 
 **Solution**:
-1. Check `backend/.env` exists
-2. Verify it contains `GOOGLE_API_KEY=AIza...`
-3. Get key at https://ai.google.dev/ if needed
-4. Restart backend after adding key
+1. Check `frontend/.env.local` exists
+2. Verify it contains `GOOGLE_API_KEY=your-key-here`
+3. Get key at https://aistudio.google.com/app/apikey if needed
+4. Restart frontend after adding key
 
 #### "API key not valid"
 
@@ -212,7 +212,7 @@ npm start  # Use production build
 ### Verify Backend is Running
 ```bash
 curl http://localhost:8000
-# Should return: {"message":"AI Ops Auditor API","status":"running"}
+# Should return: {"message":"AutomateMe API","status":"running"}
 ```
 
 ### Test Text Analysis Endpoint

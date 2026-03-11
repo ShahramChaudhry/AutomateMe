@@ -73,7 +73,7 @@ Moderation team reviews 1000+ flagged posts daily for policy violations. Process
 ## How to Use These Examples
 
 1. Copy the entire description
-2. Open AI Ops Auditor at http://localhost:3000
+2. Open AutomateMe at http://localhost:3000
 3. Select the "Text Input" tab
 4. Fill in the Team and Tools fields
 5. Paste the description

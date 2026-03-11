@@ -21,10 +21,10 @@ git init
 
 # Add and commit all files
 git add .
-git commit -m "AI Ops Auditor - Ready for deployment"
+git commit -m "AutomateMe - Ready for deployment"
 
 # Create new repo on GitHub, then connect:
-git remote add origin https://github.com/YOUR-USERNAME/ai-ops-auditor.git
+git remote add origin https://github.com/YOUR-USERNAME/automateme.git
 git branch -M main
 git push -u origin main
 ```
@@ -62,7 +62,7 @@ git push -u origin main
 
 5. Click **"Deploy"**
 
-6. **Copy your Vercel URL** (e.g., `https://ai-ops-auditor.vercel.app`)
+6. **Copy your Vercel URL** (e.g., `https://automateme.vercel.app`)
 
 ### Step 4: Update Backend CORS (30 seconds)
 

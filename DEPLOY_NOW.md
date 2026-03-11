@@ -7,7 +7,7 @@
 ```bash
 git init
 git add .
-git commit -m "Initial commit - AI Ops Auditor"
+git commit -m "Initial commit - AutomateMe"
 git branch -M main
 git remote add origin <your-github-repo-url>
 git push -u origin main
@@ -79,7 +79,7 @@ Follow the prompts:
 - Set up and deploy: **Y**
 - Which scope: Select your account
 - Link to existing project: **N**
-- Project name: `ai-ops-auditor`
+- Project name: `automateme`
 - In which directory: `.` (current)
 - Override settings: **N**
 

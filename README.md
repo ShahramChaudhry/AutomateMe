@@ -1,6 +1,6 @@
-# 🤖 AI Ops Auditor
+# 🤖 AutomateMe
 
-A polished MVP web application powered by **Google Gemini 2.0** that analyzes internal company workflows and identifies AI automation opportunities.
+A polished MVP web application powered by **Google Gemini 2.5** that analyzes internal company workflows and identifies AI automation opportunities.
 
 > **🎉 Free Tier**: 1,500 analyses per day at no cost!  
 > **⚡ Fast Setup**: 5 minutes from clone to running  
@@ -70,7 +70,7 @@ cp .env.example .env
 5. Edit `.env` and add your Google Gemini API key:
 ```
 GOOGLE_API_KEY=your_actual_api_key_here
-GEMINI_MODEL=gemini-2.0-flash-exp
+GEMINI_MODEL=gemini-2.5-flash
 FRONTEND_URL=http://localhost:3000
 ```
 

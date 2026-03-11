@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo "🚀 Deploying AI Ops Auditor to Vercel..."
+echo "🚀 Deploying AutomateMe to Vercel..."
 echo ""
 
 # Check if git repo is initialized
@@ -8,7 +8,7 @@ if [ ! -d ".git" ]; then
     echo "❌ Not a git repository. Initializing..."
     git init
     git add .
-    git commit -m "Initial commit - AI Ops Auditor"
+    git commit -m "Initial commit - AutomateMe"
     echo "✅ Git repository initialized"
     echo ""
     echo "⚠️  Now push to GitHub:"

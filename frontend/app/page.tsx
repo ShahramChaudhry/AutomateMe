@@ -1,7 +1,8 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
+import jsPDF from 'jspdf';
 
 type TabType = 'text' | 'pdf' | 'image';
 
@@ -57,7 +58,56 @@ interface AnalysisResult {
 export default function Home() {
   const [activeTab, setActiveTab] = useState<TabType>('text');
   const [loading, setLoading] = useState(false);
-  const [analysis, setAnalysis] = useState<AnalysisResult | null>(null);
+  const [textAnalysis, setTextAnalysis] = useState<AnalysisResult | null>(null);
+  const [pdfAnalysis, setPdfAnalysis] = useState<AnalysisResult | null>(null);
+  const [imageAnalysis, setImageAnalysis] = useState<AnalysisResult | null>(null);
+  
+  useEffect(() => {
+    const savedText = localStorage.getItem('workflow_analysis_text');
+    const savedPdf = localStorage.getItem('workflow_analysis_pdf');
+    const savedImage = localStorage.getItem('workflow_analysis_image');
+    
+    if (savedText) {
+      try { setTextAnalysis(JSON.parse(savedText)); } catch (e) {}
+    }
+    if (savedPdf) {
+      try { setPdfAnalysis(JSON.parse(savedPdf)); } catch (e) {}
+    }
+    if (savedImage) {
+      try { setImageAnalysis(JSON.parse(savedImage)); } catch (e) {}
+    }
+  }, []);
+  
+  useEffect(() => {
+    if (textAnalysis) {
+      localStorage.setItem('workflow_analysis_text', JSON.stringify(textAnalysis));
+    }
+  }, [textAnalysis]);
+  
+  useEffect(() => {
+    if (pdfAnalysis) {
+      localStorage.setItem('workflow_analysis_pdf', JSON.stringify(pdfAnalysis));
+    }
+  }, [pdfAnalysis]);
+  
+  useEffect(() => {
+    if (imageAnalysis) {
+      localStorage.setItem('workflow_analysis_image', JSON.stringify(imageAnalysis));
+    }
+  }, [imageAnalysis]);
+  
+  const handleTabChange = (tab: TabType) => {
+    setActiveTab(tab);
+  };
+  
+  const getCurrentAnalysis = () => {
+    if (activeTab === 'text') return textAnalysis;
+    if (activeTab === 'pdf') return pdfAnalysis;
+    if (activeTab === 'image') return imageAnalysis;
+    return null;
+  };
+  
+  const analysis = getCurrentAnalysis();
   
   const [workflowName, setWorkflowName] = useState('');
   const [team, setTeam] = useState('');
@@ -83,7 +133,7 @@ export default function Home() {
         tools_used: toolsUsed,
         description: description,
       });
-      setAnalysis(response.data);
+      setTextAnalysis(response.data);
     } catch (error) {
       console.error('Analysis failed:', error);
       alert('Analysis failed. Please try again.');
@@ -108,7 +158,7 @@ export default function Home() {
           'Content-Type': 'multipart/form-data',
         },
       });
-      setAnalysis(response.data);
+      setPdfAnalysis(response.data);
     } catch (error) {
       console.error('PDF analysis failed:', error);
       alert('PDF analysis failed. Please try again.');
@@ -133,7 +183,7 @@ export default function Home() {
           'Content-Type': 'multipart/form-data',
         },
       });
-      setAnalysis(response.data);
+      setImageAnalysis(response.data);
     } catch (error) {
       console.error('Image analysis failed:', error);
       alert('Image analysis failed. Please try again.');
@@ -178,12 +228,233 @@ export default function Home() {
     }
   };
 
+  const downloadAsPDF = () => {
+    if (!analysis) return;
+
+    const doc = new jsPDF();
+    const pageWidth = doc.internal.pageSize.getWidth();
+    const pageHeight = doc.internal.pageSize.getHeight();
+    const margin = 15;
+    const contentWidth = pageWidth - 2 * margin;
+    let yPos = 20;
+
+    const checkPageBreak = (neededSpace: number) => {
+      if (yPos + neededSpace > pageHeight - 20) {
+        doc.addPage();
+        yPos = 20;
+        return true;
+      }
+      return false;
+    };
+
+    const addText = (text: string, fontSize: number, isBold: boolean = false, indent: number = 0) => {
+      doc.setFontSize(fontSize);
+      doc.setFont('helvetica', isBold ? 'bold' : 'normal');
+      const lines = doc.splitTextToSize(text, contentWidth - indent);
+      
+      lines.forEach((line: string) => {
+        checkPageBreak(fontSize / 2 + 3);
+        doc.text(line, margin + indent, yPos);
+        yPos += fontSize / 2 + 3;
+      });
+    };
+
+    const addSectionHeader = (title: string) => {
+      checkPageBreak(15);
+      yPos += 3;
+      doc.setFontSize(14);
+      doc.setTextColor(0, 56, 48);
+      doc.setFont('helvetica', 'bold');
+      doc.text(title, margin, yPos);
+      yPos += 8;
+      doc.setDrawColor(182, 228, 197);
+      doc.setLineWidth(0.5);
+      doc.line(margin, yPos, pageWidth - margin, yPos);
+      yPos += 6;
+    };
+
+    doc.setFontSize(24);
+    doc.setTextColor(0, 56, 48);
+    doc.setFont('helvetica', 'bold');
+    doc.text('AutomateMe', pageWidth / 2, yPos, { align: 'center' });
+    yPos += 10;
+    doc.setFontSize(11);
+    doc.setFont('helvetica', 'normal');
+    doc.setTextColor(100, 100, 100);
+    doc.text('Workflow Analysis Report', pageWidth / 2, yPos, { align: 'center' });
+    yPos += 6;
+    doc.setFontSize(9);
+    doc.text(`Generated: ${new Date().toLocaleString()}`, pageWidth / 2, yPos, { align: 'center' });
+    yPos += 12;
+
+    addSectionHeader('1. Workflow Summary');
+    doc.setTextColor(60, 60, 60);
+    addText(analysis.workflow_summary, 10, false, 0);
+    yPos += 5;
+
+    addSectionHeader('2. Detected Steps');
+    analysis.detected_steps.forEach((step) => {
+      doc.setTextColor(0, 56, 48);
+      addText(`Step ${step.step_number}:`, 10, true, 0);
+      doc.setTextColor(60, 60, 60);
+      addText(step.description, 9, false, 5);
+      
+      doc.setFontSize(8);
+      doc.setTextColor(100, 100, 100);
+      const tags = [];
+      if (step.is_manual) tags.push('Manual');
+      if (step.is_repetitive) tags.push('Repetitive');
+      if (step.time_estimate) tags.push(step.time_estimate);
+      if (tags.length > 0) {
+        checkPageBreak(8);
+        doc.text(`[${tags.join(' | ')}]`, margin + 5, yPos);
+        yPos += 6;
+      }
+      yPos += 2;
+    });
+    yPos += 3;
+
+    addSectionHeader('3. Friction Points & Manual Work');
+    if (analysis.friction_points && analysis.friction_points.length > 0) {
+      analysis.friction_points.forEach((point) => {
+        doc.setTextColor(60, 60, 60);
+        addText(`- ${point}`, 9, false, 3);
+        yPos += 2;
+      });
+    }
+    yPos += 3;
+
+    addSectionHeader('4. AI Automation Opportunities');
+    analysis.automation_opportunities.forEach((opp, idx) => {
+      doc.setTextColor(0, 56, 48);
+      addText(`${idx + 1}. ${opp.ai_pattern}`, 10, true, 0);
+      
+      doc.setTextColor(60, 60, 60);
+      addText(opp.description, 9, false, 5);
+      
+      doc.setFontSize(8);
+      doc.setTextColor(100, 100, 100);
+      checkPageBreak(8);
+      const detailsText = `Risk: ${opp.risk} | Difficulty: ${opp.difficulty} | Time Saved: ${opp.estimated_time_saved} | Human Review: ${opp.human_in_loop ? 'Required' : 'Optional'}`;
+      const detailsLines = doc.splitTextToSize(detailsText, contentWidth - 5);
+      detailsLines.forEach((line: string) => {
+        checkPageBreak(6);
+        doc.text(line, margin + 5, yPos);
+        yPos += 5;
+      });
+      yPos += 3;
+    });
+    yPos += 3;
+
+    addSectionHeader('5. Recommended AI Agents');
+    analysis.recommended_agents.forEach((agent, idx) => {
+      doc.setTextColor(0, 56, 48);
+      addText(`${idx + 1}. ${agent.agent_name}`, 11, true, 0);
+      
+      doc.setTextColor(60, 60, 60);
+      addText(agent.purpose, 9, false, 5);
+      
+      doc.setFontSize(8);
+      doc.setTextColor(100, 100, 100);
+      checkPageBreak(8);
+      doc.text(`Architecture: ${agent.architecture}`, margin + 5, yPos);
+      yPos += 5;
+      
+      const inputsLines = doc.splitTextToSize(`Inputs: ${agent.inputs.join(', ')}`, contentWidth - 5);
+      inputsLines.forEach((line: string) => {
+        checkPageBreak(6);
+        doc.text(line, margin + 5, yPos);
+        yPos += 5;
+      });
+      
+      const outputsLines = doc.splitTextToSize(`Outputs: ${agent.outputs.join(', ')}`, contentWidth - 5);
+      outputsLines.forEach((line: string) => {
+        checkPageBreak(6);
+        doc.text(line, margin + 5, yPos);
+        yPos += 5;
+      });
+      yPos += 3;
+    });
+    yPos += 3;
+
+    addSectionHeader('6. Estimated Impact');
+    doc.setFontSize(10);
+    doc.setTextColor(60, 60, 60);
+    doc.setFont('helvetica', 'bold');
+    checkPageBreak(20);
+    doc.text('Time Saved:', margin + 5, yPos);
+    doc.setFont('helvetica', 'normal');
+    const timeSavedLines = doc.splitTextToSize(analysis.estimated_impact.time_saved, contentWidth - 35);
+    doc.text(timeSavedLines, margin + 35, yPos);
+    yPos += Math.max(7, timeSavedLines.length * 5);
+    
+    doc.setFont('helvetica', 'bold');
+    doc.text('Speed Improvement:', margin + 5, yPos);
+    doc.setFont('helvetica', 'normal');
+    const speedLines = doc.splitTextToSize(analysis.estimated_impact.speed_improvement, contentWidth - 50);
+    doc.text(speedLines, margin + 50, yPos);
+    yPos += Math.max(7, speedLines.length * 5);
+    
+    doc.setFont('helvetica', 'bold');
+    doc.text('Quality Improvement:', margin + 5, yPos);
+    doc.setFont('helvetica', 'normal');
+    const qualityLines = doc.splitTextToSize(analysis.estimated_impact.quality_improvement, contentWidth - 52);
+    doc.text(qualityLines, margin + 52, yPos);
+    yPos += Math.max(7, qualityLines.length * 5) + 5;
+
+    addSectionHeader('7. Risk Areas & Human Review');
+    if (analysis.risk_areas && analysis.risk_areas.length > 0) {
+      analysis.risk_areas.forEach((risk) => {
+        doc.setFontSize(9);
+        doc.setTextColor(253, 51, 51);
+        doc.setFont('helvetica', 'bold');
+        checkPageBreak(8);
+        doc.text('WARNING:', margin + 5, yPos);
+        yPos += 5;
+        
+        doc.setFont('helvetica', 'normal');
+        doc.setTextColor(60, 60, 60);
+        addText(risk, 9, false, 5);
+        yPos += 2;
+      });
+    }
+    
+    doc.setFontSize(10);
+    doc.setTextColor(0, 56, 48);
+    doc.setFont('helvetica', 'bold');
+    checkPageBreak(8);
+    doc.text(`Compliance Sensitivity: ${analysis.compliance_sensitivity.toUpperCase()}`, margin + 5, yPos);
+    yPos += 10;
+
+    addSectionHeader('8. Implementation Plan');
+    analysis.implementation_plan.forEach((step) => {
+      doc.setTextColor(0, 56, 48);
+      addText(`Step ${step.step_number}:`, 10, true, 0);
+      
+      doc.setTextColor(60, 60, 60);
+      addText(step.description, 9, false, 5);
+      
+      doc.setFontSize(8);
+      doc.setTextColor(100, 100, 100);
+      checkPageBreak(6);
+      doc.text(`Complexity: ${step.complexity}`, margin + 5, yPos);
+      yPos += 8;
+    });
+
+    doc.setFontSize(8);
+    doc.setTextColor(150, 150, 150);
+    doc.text('AutomateMe - AI Workflow Auditor', pageWidth / 2, pageHeight - 10, { align: 'center' });
+
+    const fileName = `AutomateMe_Analysis_${new Date().toISOString().split('T')[0]}.pdf`;
+    doc.save(fileName);
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-taptap-cream via-white to-taptap-light-green">
       <div className="max-w-6xl mx-auto px-6 py-12">
         <div className="text-center mb-12">
           <h1 className="text-5xl font-bold text-taptap-dark-green mb-4">
-            AI Ops Auditor
+            AutomateMe
           </h1>
           <p className="text-xl text-taptap-dark-green/70">
             Audit operational workflows to uncover high-impact AI automation opportunities.
@@ -193,7 +464,7 @@ export default function Home() {
         <div className="bg-white rounded-2xl shadow-lg p-8 mb-8">
           <div className="flex gap-4 mb-6 border-b border-gray-200">
             <button
-              onClick={() => setActiveTab('text')}
+              onClick={() => handleTabChange('text')}
               className={`pb-3 px-4 font-semibold transition-all ${
                 activeTab === 'text'
                   ? 'text-taptap-dark-green border-b-2 border-taptap-dark-green'
@@ -203,7 +474,7 @@ export default function Home() {
               Text Input
             </button>
             <button
-              onClick={() => setActiveTab('pdf')}
+              onClick={() => handleTabChange('pdf')}
               className={`pb-3 px-4 font-semibold transition-all ${
                 activeTab === 'pdf'
                   ? 'text-taptap-dark-green border-b-2 border-taptap-dark-green'
@@ -213,7 +484,7 @@ export default function Home() {
               PDF Upload
             </button>
             <button
-              onClick={() => setActiveTab('image')}
+              onClick={() => handleTabChange('image')}
               className={`pb-3 px-4 font-semibold transition-all ${
                 activeTab === 'image'
                   ? 'text-taptap-dark-green border-b-2 border-taptap-dark-green'
@@ -345,6 +616,18 @@ export default function Home() {
 
         {analysis && (
           <div className="space-y-6">
+            <div className="flex justify-end mb-4">
+              <button
+                onClick={downloadAsPDF}
+                className="flex items-center gap-2 bg-taptap-dark-green text-white px-6 py-3 rounded-lg font-semibold hover:bg-taptap-dark-green/90 transition-all shadow-md"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-5 h-5">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
+                </svg>
+                Download as PDF
+              </button>
+            </div>
+            
             <div className="bg-white rounded-2xl shadow-lg p-8">
               <h2 className="text-2xl font-bold text-taptap-dark-green mb-4">
                 Workflow Summary
