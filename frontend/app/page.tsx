@@ -67,7 +67,7 @@ export default function Home() {
   const [pdfFile, setPdfFile] = useState<File | null>(null);
   const [imageFile, setImageFile] = useState<File | null>(null);
 
-  const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+  const API_URL = '/api';
 
   const handleTextSubmit = async () => {
     if (!workflowName || !team || !description) {
