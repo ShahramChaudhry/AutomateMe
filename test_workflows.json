@@ -1,0 +1,28 @@
+{
+  "workflows": [
+    {
+      "workflow_name": "Customer Support Ticket Resolution",
+      "team": "Customer Operations",
+      "tools_used": "Zendesk, Slack, Salesforce",
+      "description": "Our support team receives 100+ customer tickets daily through Zendesk. Each ticket goes through this process:\n\n1. Agent reads the ticket and manually categorizes it (billing, technical, account)\n2. Agent searches through 3 different knowledge bases to find relevant information\n3. Agent manually drafts a response, often copying from previous tickets\n4. Supervisor reviews responses for quality before sending\n5. Agent updates Salesforce with ticket details and customer notes\n6. Agent posts update in team Slack channel\n\nThe categorization and research steps take 5-10 minutes per ticket. Response drafting takes another 10-15 minutes. We often have inconsistent responses across agents. High volume during peak hours causes 24+ hour response times.\n\nThis workflow runs 100 times per day, 5 days per week. Customer data is sensitive and requires compliance with data privacy regulations."
+    },
+    {
+      "workflow_name": "Sales Lead Qualification",
+      "team": "Sales Operations",
+      "tools_used": "HubSpot, LinkedIn Sales Navigator, Gmail",
+      "description": "Sales reps manually qualify 30-40 inbound leads daily. Process: review lead form submission, research company on LinkedIn, check company size and industry, determine if they match ICP, draft personalized outreach email, send 3-5 follow-up emails over 2 weeks, manually schedule demo through email back-and-forth. Takes 45 minutes per lead. Many qualified leads fall through cracks due to manual follow-up process. Email personalization is time-consuming and quality varies by rep."
+    },
+    {
+      "workflow_name": "Invoice Processing",
+      "team": "Finance Operations",
+      "tools_used": "Email, QuickBooks, Slack, Google Drive",
+      "description": "Finance team processes 200+ vendor invoices monthly. Process: download PDF from email, manually extract vendor, amount, invoice number, due date into spreadsheet, verify against purchase order, get manager approval for amounts over $1000 via Slack, enter into QuickBooks, file in Drive. Takes 10-15 minutes per invoice. Frequent data entry errors and missed approval deadlines causing late fees."
+    },
+    {
+      "workflow_name": "Weekly Performance Reporting",
+      "team": "Operations Management",
+      "tools_used": "Salesforce, Zendesk, Google Sheets, Email",
+      "description": "Every Friday, team leads compile performance reports. They pull data from 3 systems, copy into Excel, create charts, calculate week-over-week changes, write executive summary, email to 15 stakeholders. Takes 3-4 hours. Data entry errors are common. Summary quality varies. Reports often delayed past 10am deadline."
+    }
+  ]
+}
